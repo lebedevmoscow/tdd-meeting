@@ -5,18 +5,31 @@ import Adapter from 'enzyme-adapter-react-16'
 
 configure({ adapter: new Adapter(), disableLifecycleMethods: true })
 
-const app = shallow(<App />)
+describe('<App />', () => {
+    const app = shallow(<App />)
 
-it('renders correctly', () => {
-    expect(app).toMatchSnapshot()
-})
+    it('renders correctly', () => {
+        expect(app).toMatchSnapshot()
+    })
 
-it('initializes the `state` with an empty list of gifts', () => {
-    expect(app.state().gifts).toEqual([])
-})
+    it('initializes the `state` with an empty list of gifts', () => {
+        expect(app.state().gifts).toEqual([])
+    })
 
-it('add a new gift to `state` when clicking the `add gift` button', () => {
-    app.find('.btn-add').simulate('click')
+    describe('when clicking the `add-gift` button', () => {
+        beforeEach(() => {
+            app.find('.btn-add').simulate('click')
+        })
 
-    expect(app.state().gifts).toEqual([{ id: 1 }])
+        afterEach(() => {
+            app.setState({ gifts: [] })
+        })
+
+        it('add a new gift to `state`', () => {
+            expect(app.state().gifts).toEqual([{ id: 1 }])
+        })
+        it('add a new gift to the rendered list', () => {
+            expect(app.find('.gift-list').children().length).toEqual(1)
+        })
+    })
 })
