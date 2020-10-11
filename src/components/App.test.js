@@ -8,6 +8,8 @@ configure({ adapter: new Adapter(), disableLifecycleMethods: true })
 describe('<App />', () => {
     const app = shallow(<App />)
 
+    app.debug()
+
     it('renders correctly', () => {
         expect(app).toMatchSnapshot()
     })
